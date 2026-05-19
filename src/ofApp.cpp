@@ -40,6 +40,7 @@ void ofApp::setup() {
 	for (int i = 0; i < rainColumns; i++) {
 		raining.push_back(new Raindrops());
 		raining[i]->setVelocity(ofRandom(10) + 5);
+		raining[i]->setWidth(ofRandom(20));
 		raining[i]->setRainAmount(ofRandom(10));
 	}
 	ofPopStyle();
@@ -80,7 +81,9 @@ void ofApp::update() {
 		}
 		if (m.getAddress() == "/rainOn") {
 			oscRain = m.getArgAsFloat(0);
-			oscRain2 = m.getArgAsFloat(1);
+		}
+		if (m.getAddress() == "/shader4") {
+			osc_shader4 = m.getArgAsFloat(0);
 		}
 	}
 }
@@ -98,28 +101,21 @@ void ofApp::draw() {
 		ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
 		shader.end();
 
+		if (oscBeep1 > 0) {
+			drawRandomRects();
+		}
+
 		shader2.begin();
 		shader2.setUniform2f("u_resolution", ofGetWindowSize());
 		shader2.setUniform1f("u_time", ofGetElapsedTimef());
 		shader2.setUniform1f("u_p1", oscSnare);
 		ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
 		shader2.end();
+
 		/* draw audio waveform */
 		
 		//drawTimeDomain(0);
 		//drawTimeDomain(75); 
-
-		if (oscBeep1 > 0) {
-			drawRandomRects();
-		}
-
-		if (oscRain2) {
-			shader4.begin();
-			shader4.setUniform2f("u_resolution", ofGetWindowSize());
-			shader4.setUniform1f("u_time", ofGetElapsedTimef());
-			ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
-			shader4.end();
-		}
 		
 		shader3.begin();
 		shader3.setUniform2f("u_resolution", ofGetWindowSize());
@@ -144,6 +140,15 @@ void ofApp::draw() {
 			for (int r = 0; r < raining.size(); r++) {
 				raining[r]->draw(r * (ofGetWidth() / rainColumns));
 			}
+		}
+
+		if (osc_shader4) {
+			std::cout << "osc_shader4: " << osc_shader4 << std::endl;
+			shader4.begin();
+			shader4.setUniform2f("u_resolution", ofGetWindowSize());
+			shader4.setUniform1f("u_time", ofGetElapsedTimef());
+			ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+			shader4.end();
 		}
 	//}
 	//else {

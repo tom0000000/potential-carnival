@@ -34,7 +34,7 @@ public:
 
 	/* osc */
 	ofxOscReceiver osc;
-	float oscKick, oscSnare, oscPerc, oscImgIter, oscDrawImgs, oscBeep1, oscRain, oscRain2;
+	float oscKick, oscSnare, oscPerc, oscImgIter, oscDrawImgs, oscBeep1, oscRain, osc_shader4;
 
 	/* images */
 	ofxThreadedImageLoader  loader;

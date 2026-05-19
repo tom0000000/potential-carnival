@@ -37,7 +37,7 @@ void Raindrops::draw(int _x) {
 		}
 		ofDrawRectangle(rainX, rainY[i], width, length[i]);
 		if (rainY[i] > ofGetHeight()) {
-			rainY[i] = 0;
+			rainY[i] = -100;
 		}
 		else {
 			rainY[i] += velocity;
